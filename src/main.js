@@ -3,11 +3,19 @@ import routes from './routes'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // Install BootstrapVue
 Vue.use(BootstrapVue)
     // install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
+
+library.add(faPlus)
+library.add(faTimes)
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 
