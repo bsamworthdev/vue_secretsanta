@@ -1,12 +1,6 @@
 <template>
   <div class="container">
-    <ul>
-      <li>
-        <v-link href="/">Home</v-link>
-        <v-link href="/about">About</v-link>
-      </li>
-    </ul>
-
+    <v-link href="/">Home</v-link>
     <slot></slot>
   </div>
 </template>
@@ -23,9 +17,10 @@
 
 <style scoped>
   .container {
-    max-width: 600px;
     margin: 0 auto;
     padding: 15px 30px;
-    background: #f9f7f5;
+    background: white;
+    border:2px solid #C0C0C0;
+    min-height:100%;
   }
 </style>

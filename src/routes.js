@@ -1,4 +1,4 @@
 export default {
     '/': 'Home',
-    '/details': 'DetailsForm'
+    '/setup': 'Setup'
 }

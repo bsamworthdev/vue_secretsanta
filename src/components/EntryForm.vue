@@ -1,58 +1,88 @@
 <template>
-  <div class="hello">
+  <div>
     <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project, <br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <form>
+
+      <div v-for="(line, index) in lines" :key="index" class="row">
+      <div class="col-lg-6">
+        <div class="row">
+          <div class="col-10">
+            <input
+              v-model="line.name"
+              label="participantName"
+              type="tel"
+              placeholder="Name..."
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+          <input
+              v-model="line.email"
+              label="participantEmail"
+              type="tel"
+              placeholder="Email..."
+              value=""
+            />
+      </div>
+
+      <div class="col-lg-2">
+        <div class="block float-right">
+          <input type="button" round @click="removeLine(index)" value="Delete" />
+          <input type="button" round v-if="index + 1 === lines.length" @click="addLine" value="Add"/>
+        </div>
+      </div>
+    </div>
+    </form>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'ParticipantLine',
   props: {
     msg: String
+  },
+  data() {
+    return {
+      lines: [],
+      blockRemoval: true
+    }
+  },
+  watch: {
+    lines() {
+      this.blockRemoval = this.lines.length <= 1
+    }
+  },
+  methods: {
+    addLine() {
+      let checkEmptyLines = this.lines.filter(line => line.name === null)
+
+      if (checkEmptyLines.length >= 1 && this.lines.length > 0) {
+         return
+      } 
+
+      this.lines.push({
+        name: null,
+        email: null
+      })
+    },
+
+    removeLine(lineId) {
+      if (!this.blockRemoval) {
+         this.lines.splice(lineId, 1)
+      }
+    }
+  },
+  mounted() {
+    this.addLine()
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+
 </style>

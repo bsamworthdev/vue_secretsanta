@@ -4,7 +4,7 @@
     <p>
       Hi and welcome to my Secret Santa app.
     </p>
-    <b-button variant="success" href="/details">Continue</b-button>
+    <b-button variant="success" href="/setup">Continue</b-button>
   </div>
 </template>
 

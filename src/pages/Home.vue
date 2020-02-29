@@ -1,18 +1,22 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="../assets/santa.png">
-    <title></title>
-    <Intro msg="Secret Santa"/>
-  </div>
+  <main-layout>
+    <div id="app">
+      <img alt="Vue logo" src="../assets/santa.png">
+      <title></title>
+      <Intro msg="Secret Santa"/>
+    </div>
+  </main-layout>
 </template>
 
 <script>
 import Intro from '../components/Intro.vue'
+import MainLayout from '../layouts/Main.vue'
 
 export default {
   name: 'Home',
   components: {
-    Intro
+    Intro,
+    MainLayout
   }
 }
 </script>
