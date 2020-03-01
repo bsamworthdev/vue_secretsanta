@@ -7,9 +7,8 @@
       </b-button>
     </h1>
     
-    <form>
+    <b-form @submit.prevent="submitForm">
       <div v-for="(line, index) in lines" :key="index" class="row participantRow">
-
         <div class="col-lg-1">
             <label
               class="participantNumber"
@@ -47,16 +46,15 @@
             </b-button>
           </div>
         </div>
-
       </div>
       <div class="row">
         <div class="col-lg-12 text-align-center">
-          <b-button  id="continueButton" variant="success" size="lg" :disabled="lines.filter(line => line.name !== null && line.name !== '').length < 2">
+          <b-button  id="continueButton" type="submit" variant="success" size="lg" :disabled="lines.filter(line => line.name !== null && line.name !== '').length < 2">
             Continue
           </b-button>
         </div>
       </div>
-    </form>
+    </b-form>
   </div>
 </template>
 
@@ -94,12 +92,23 @@ export default {
       })
       this.addLineClicked = false;
     },
-
     removeLine(lineId) {
       if (!this.blockRemoval) {
          this.lines.splice(lineId, 1)
       }
-    }
+    },
+    submitForm() {
+      this.errors = {};
+      const axios = require('axios');
+      axios.post('/submit', this.lines).then(response => {
+        alert('Message sent!');
+        console.log(response);
+      }).catch(error => {
+        if (error.response.status === 422) {
+          this.errors = error.response.data.errors || {};
+        }
+      });
+    },
   },
   mounted() {
     this.addLine()
