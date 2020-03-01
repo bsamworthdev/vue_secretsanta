@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>
+    <h1 id="participantsHeader">
       {{ msg }} 
       <b-button variant="success" @click="addLine">
         <font-awesome-icon icon="plus" /> Add
@@ -42,12 +42,19 @@
 
         <div class="col-lg-3">
           <div class="block float-left">
-            <b-button variant="danger" @click="removeLine(index)">
+            <b-button variant="danger" @click="removeLine(index)" :disabled="lines.length == 1">
               <font-awesome-icon icon="times" /> Delete
             </b-button>
           </div>
         </div>
 
+      </div>
+      <div class="row">
+        <div class="col-lg-12 text-align-center">
+          <b-button  id="continueButton" variant="success" size="lg" :disabled="lines.filter(line => line.name !== null && line.name !== '').length < 2">
+            Continue
+          </b-button>
+        </div>
       </div>
     </form>
   </div>
@@ -74,7 +81,7 @@ export default {
   methods: {
     addLine() {
       this.addLineClicked = true;
-      let checkEmptyLines = this.lines.filter(line => line.name === null)
+      let checkEmptyLines = this.lines.filter(line => (line.name === null || line.name === ''))
 
       if (checkEmptyLines.length >= 1 && this.lines.length > 0) {
         return
@@ -102,6 +109,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  #participantsHeader {
+    padding-left: 80px;
+  }
   .participantName, .participantEmail{
     width:90%;
   }
@@ -110,5 +120,11 @@ export default {
   }
   .isEmpty{
     background-color:pink;
+  }
+  .hidden{
+    display:none;
+  }
+  #continueButton{
+    margin-top:40px;
   }
 </style>
