@@ -1,60 +1,62 @@
 <template>
-  <div>
-    <h1 id="participantsHeader">
+  <div class="card">
+    <h1 class="card-title" id="participantsHeader">
       {{ msg }} 
       <b-button variant="success" @click="addLine">
         <font-awesome-icon icon="plus" /> Add
       </b-button>
     </h1>
     
-    <b-form @submit.prevent="submitForm">
-      <div v-for="(line, index) in lines" :key="index" class="row participantRow">
-        <div class="col-lg-1">
-            <label
-              class="participantNumber"
-              label="participantNumber"
-            >({{ index+1 }})</label>
-        </div>
+    <div class="card-body">
+      <b-form @submit.prevent="submitForm">
+        <div v-for="(line, index) in lines" :key="index" class="row participantRow">
+          <div class="col-lg-1">
+              <label
+                class="participantNumber"
+                label="participantNumber"
+              >({{ index+1 }})</label>
+          </div>
 
-        <div class="col-lg-4">
-            <input
-              class="participantName"
-              v-model="line.name"
-              label="participantName"
-              type="text"
-              placeholder="Name..."
-              value=""
-              :class="{'isEmpty': line.name === null && addLineClicked}"
-            />
-        </div>
-
-        <div class="col-lg-3">
-            <input
-                class="participantEmail"
-                v-model="line.email"
-                label="participantEmail"
+          <div class="col-lg-4">
+              <input
+                class="participantName"
+                v-model="line.name"
+                label="participantName"
                 type="text"
-                placeholder="Email..."
+                placeholder="Name..."
                 value=""
+                :class="{'isEmpty': line.name === null && addLineClicked}"
               />
-        </div>
+          </div>
 
-        <div class="col-lg-3">
-          <div class="block float-left">
-            <b-button variant="danger" @click="removeLine(index)" :disabled="lines.length == 1">
-              <font-awesome-icon icon="times" /> Delete
+          <div class="col-lg-3">
+              <input
+                  class="participantEmail"
+                  v-model="line.email"
+                  label="participantEmail"
+                  type="text"
+                  placeholder="Email..."
+                  value=""
+                />
+          </div>
+
+          <div class="col-lg-3">
+            <div class="block float-left">
+              <b-button variant="danger" @click="removeLine(index)" :disabled="lines.length == 1">
+                <font-awesome-icon icon="times" /> Delete
+              </b-button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 text-align-center">
+            <b-button  id="continueButton" type="submit" variant="success" size="lg" :disabled="lines.filter(line => line.name !== null && line.name !== '').length < 2">
+              Continue
             </b-button>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-12 text-align-center">
-          <b-button  id="continueButton" type="submit" variant="success" size="lg" :disabled="lines.filter(line => line.name !== null && line.name !== '').length < 2">
-            Continue
-          </b-button>
-        </div>
-      </div>
-    </b-form>
+      </b-form>
+    </div>
   </div>
 </template>
 
@@ -98,7 +100,7 @@ export default {
       }
     },
     submitForm() {
-      this.errors = {};
+      /*this.errors = {};
       const axios = require('axios');
       axios.post('/submit', this.lines).then(response => {
         alert('Message sent!');
@@ -107,11 +109,20 @@ export default {
         if (error.response.status === 422) {
           this.errors = error.response.data.errors || {};
         }
-      });
+      });*/
+
+      //Store participants in local storage
+      localStorage.lines = JSON.stringify(this.lines);
+
+      //location.href="";
     },
   },
   mounted() {
-    this.addLine()
+    if (localStorage.lines){
+      this.lines = JSON.parse(localStorage.lines);
+    } else {
+      this.addLine();
+    }
   }
 }
 </script>
@@ -120,6 +131,9 @@ export default {
 <style scoped>
   #participantsHeader {
     padding-left: 80px;
+  }
+  .card{
+    padding: 20px;
   }
   .participantName, .participantEmail{
     width:90%;
